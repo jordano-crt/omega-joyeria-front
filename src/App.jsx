@@ -9,7 +9,7 @@ import { AuthProvider } from "./services/authContext";
 // Componentes comunes
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./services/ProtectedRoute";
 
 // Páginas principales
 import Home from "./pages/Comun/Home";
@@ -27,7 +27,7 @@ import Profile from "./pages/Usuario/UserProfile";
 import ManageTestimonials from "./pages/Usuario/ManageTestimonials";
 import FormTestimonials from "./pages/Usuario/FormTestimonials";
 import ManageEvents from "./pages/Usuario/ManageEvents";
-import ManageCitas from "./pages/Usuario/ManageCitas";
+import ManageCitasNew from "./pages/Usuario/ManageCitasNew";
 
 // Páginas del blog
 import Blog from "./pages/Comun/Blog";
@@ -39,6 +39,8 @@ import ArticleForm from "./pages/Admin/ArticleForm";
 import ManageArticles from "./pages/Admin/ManageArticles";
 import ManageReseñas from "./pages/Admin/ManageReseñas";
 import ManageUsers from "./pages/Admin/ManageUsers";
+import ManageDisponibilidad from "./pages/Admin/ManageDisponibilidad";
+import ManageServicios from "./pages/Admin/ManageServicios";
 
 // Layout general
 function Layout({ children }) {
@@ -93,7 +95,7 @@ function App() {
               path="/citas"
               element={
                 <ProtectedRoute allowedRoles={[1, 2]}>
-                  <ManageCitas />
+                  <ManageCitasNew />
                 </ProtectedRoute>
               }
             />
@@ -115,11 +117,7 @@ function App() {
             />
             <Route
               path="/testimonials"
-              element={
-                <ProtectedRoute allowedRoles={[1, 2]}>
-                  <ManageTestimonials />
-                </ProtectedRoute>
-              }
+              element={<ManageTestimonials />}
             />
             <Route
               path="/testimonials/new"
@@ -176,6 +174,22 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={[2]}>
                   <ArticleForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/disponibilidad"
+              element={
+                <ProtectedRoute allowedRoles={[2]}>
+                  <ManageDisponibilidad />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/servicios"
+              element={
+                <ProtectedRoute allowedRoles={[2]}>
+                  <ManageServicios />
                 </ProtectedRoute>
               }
             />
