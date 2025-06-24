@@ -5,6 +5,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // Añadir estado de carga
 
   useEffect(() => {
     const savedUser = sessionStorage.getItem("user");
@@ -24,6 +25,7 @@ export const AuthProvider = ({ children }) => {
         logoutUser();
       }
     }
+    setIsLoading(false); // Marcar como cargado
   }, []);
 
   const loginUser = (userData) => {
@@ -47,7 +49,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loginUser, logoutUser }}>
+    <AuthContext.Provider value={{ user, token, isLoading, loginUser, logoutUser }}>
       {children}
     </AuthContext.Provider>
   );
