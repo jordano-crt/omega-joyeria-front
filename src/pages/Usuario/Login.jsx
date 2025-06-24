@@ -4,7 +4,7 @@ import { login } from '../../services/authService';
 import { AuthContext } from '../../services/authContext';
 import { motion } from 'framer-motion';
 import { AiOutlineLoading, AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
-import logo from '../../assets/logo.svg';
+import logo from '../../assets/Logo.svg';
 import googleLogo from '../../assets/google.png';
 
 const Login = () => {

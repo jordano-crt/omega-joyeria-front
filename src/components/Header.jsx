@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import logo from '../assets/logo.svg';
+import logo from '../assets/Logo.svg';
 import { AuthContext } from '../services/authContext';
 import NavigationLinks from './NavigationLinks';
 import UserMenu from './UserMenu';
