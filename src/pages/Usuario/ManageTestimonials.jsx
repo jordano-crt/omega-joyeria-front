@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { AuthContext } from "../../services/authContext";
+import { obtenerTestimonios, eliminarTestimonio, actualizarTestimonio } from "../../services/testimoniosService";
 import EditTestimonialModal from "./ModalTestimonials"; // Importar el modal
 
 const ManageTestimonials = () => {
@@ -11,9 +12,10 @@ const ManageTestimonials = () => {
   const [filterStars, setFilterStars] = useState(null);
   const [filterOwn, setFilterOwn] = useState(false); // Filtro de reseñas propias
   const [currentPage, setCurrentPage] = useState(1); // Paginación
+  const [totalPages, setTotalPages] = useState(1); // Total de páginas
   const [isModalOpen, setIsModalOpen] = useState(false); // Controla el estado del modal
   const [selectedTestimonial, setSelectedTestimonial] = useState(null); // Testimonio seleccionado para editar
-  const { token, user } = useContext(AuthContext); // Obtenemos el token y el usuario
+  const { token, user, isLoading: authLoading } = useContext(AuthContext); // Obtenemos el token, usuario y estado de carga
   const navigate = useNavigate();
   const testimonialsPerPage = 5;
 
@@ -22,36 +24,72 @@ const ManageTestimonials = () => {
     setError("");
     setLoading(true);
     try {
-      let url = `http://localhost:4000/testimonios?limit=${testimonialsPerPage}&page=${page}`;
+      const params = {
+        limit: testimonialsPerPage,
+        page: page
+      };
+      
       if (stars) {
-        url += `&stars=${stars}`;
+        params.stars = stars;
       }
-      if (isOwn) {
-        url += `&usuario_id=${user.usuario_id}`; // Filtrar por el usuario autenticado
-      }
-
-      const response = await fetch(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Error al cargar los testimonios");
+      
+      // Solo agregar filtro por usuario si está autenticado y quiere ver sus reseñas
+      if (isOwn && user?.usuario_id) {
+        params.usuario_id = user.usuario_id;
       }
 
-      const data = await response.json();
-      setTestimonials(data || []);
+      const data = await obtenerTestimonios(params);
+      
+      if (data && Array.isArray(data)) {
+        setTestimonials(data);
+        // Calculamos las páginas basándonos en si recibimos menos testimonios que el límite
+        if (data.length < testimonialsPerPage) {
+          setTotalPages(page);
+        } else {
+          setTotalPages(page + 1); // Al menos una página más
+        }
+      } else {
+        setTestimonials([]);
+        setTotalPages(1);
+      }
     } catch (error) {
       setError(error.message);
+      setTestimonials([]);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
+    // Esperar a que el AuthContext termine de cargar
+    if (authLoading) {
+      return;
+    }
+    
+    // Solo mostrar error si se está intentando filtrar por reseñas propias sin autenticación
+    if (filterOwn && (!token || !user)) {
+      setLoading(false);
+      setError("Debes iniciar sesión para ver tus reseñas");
+      setTestimonials([]);
+      return;
+    }
+    
+    // Solo mostrar error si se está intentando filtrar por reseñas propias siendo admin
+    if (filterOwn && user?.rol_id === 2) {
+      setLoading(false);
+      setError("Los administradores no tienen reseñas propias");
+      setTestimonials([]);
+      return;
+    }
+    
+    // Limpiar error cuando no se está filtrando por reseñas propias
+    if (!filterOwn) {
+      setError("");
+    }
+    
+    // Cargar testimonios (públicos si no hay filtro propio, del usuario si hay filtro propio y está autenticado)
     fetchTestimonials(filterStars, filterOwn, currentPage);
-  }, [filterStars, filterOwn, currentPage]);
+  }, [filterStars, filterOwn, currentPage, token, user, authLoading]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -66,17 +104,7 @@ const ManageTestimonials = () => {
   // Eliminar reseña
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:4000/testimonios/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Error al eliminar la reseña.");
-      }
-
+      await eliminarTestimonio(id);
       setTestimonials((prev) =>
         prev.filter((testimonial) => testimonial.testimonio_id !== id)
       );
@@ -88,20 +116,7 @@ const ManageTestimonials = () => {
   // Guardar cambios en la reseña
   const handleSave = async (id, updatedTestimonial) => {
     try {
-      const response = await fetch(`http://localhost:4000/testimonios/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(updatedTestimonial),
-      });
-
-      if (!response.ok) {
-        throw new Error("Error al guardar los cambios.");
-      }
-
-      const data = await response.json();
+      const data = await actualizarTestimonio(id, updatedTestimonial);
       // Actualiza la lista de testimonios con la nueva reseña
       setTestimonials((prev) =>
         prev.map((testimonial) =>
@@ -145,19 +160,38 @@ const ManageTestimonials = () => {
                 filterOwn
                   ? "bg-sgreen text-white border-green-500"
                   : "bg-white text-gray-700 border-gray-200 hover:bg-gray-100"
-              }`}
+              } ${(!token || !user || user.rol_id === 2) ? 'opacity-50 cursor-not-allowed' : ''}`}
+              disabled={!token || !user || user.rol_id === 2}
+              title={(!token || !user) ? 'Debes iniciar sesión para ver tus reseñas' : user.rol_id === 2 ? 'Los administradores no tienen reseñas propias' : ''}
             >
               {filterOwn ? "Ver Todas las Reseñas" : "Ver Solo Mis Reseñas"}
             </button>
           </div>
+
+          {/* Botón para crear nueva reseña - solo para usuarios normales (no administradores) */}
+          {token && user && user.rol_id !== 2 && (
+            <button
+              onClick={() => navigate('/testimonials/new')}
+              className="bg-sgreen text-white py-2 px-4 border-2 border-green-500 rounded-2xl shadow-inner-green hover:shadow-inner-hgreen transition duration-300 ease-in-out"
+            >
+              Crear Nueva Reseña
+            </button>
+          )}
         </div>
 
         {loading ? (
           <p className="text-center text-gray-600">Cargando testimonios...</p>
+        ) : error ? (
+          <p className="text-center text-red-500">{error}</p>
         ) : testimonials.length === 0 ? (
-          <p className="text-center text-gray-500">
-            No se encontraron testimonios.
-          </p>
+          <div className="text-center text-gray-500">
+            <p>No se encontraron testimonios.</p>
+            {filterOwn && (
+              <p className="mt-2 text-sm">
+                Aún no has creado ninguna reseña. ¡Crea tu primera reseña!
+              </p>
+            )}
+          </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
             {testimonials.map((testimonial) => (
@@ -173,9 +207,20 @@ const ManageTestimonials = () => {
                     testimonial.apellido_paterno || ""
                   } ${testimonial.apellido_materno || ""}`}
                 </h3>
-                <p className="text-gray-600 text-xs">
-                  {"★".repeat(testimonial.estrellas || 0)}
-                </p>
+                <div className="flex justify-between items-center">
+                  <p className="text-gray-600 text-xs">
+                    {"★".repeat(testimonial.estrellas || 0)}
+                  </p>
+                  <span className={`text-xs px-2 py-1 rounded-full ${
+                    testimonial.nombre_estado === 'Confirmado' 
+                      ? 'bg-green-100 text-green-800' 
+                      : testimonial.nombre_estado === 'Pendiente'
+                      ? 'bg-yellow-100 text-yellow-800'
+                      : 'bg-red-100 text-red-800'
+                  }`}>
+                    {testimonial.nombre_estado}
+                  </span>
+                </div>
                 <p className="text-gray-600 text-sm line-clamp-3 mt-2">
                   {testimonial.contenido || "Sin contenido disponible"}
                 </p>
@@ -185,7 +230,7 @@ const ManageTestimonials = () => {
                 </p>
 
                 {/* Mostrar botones de edición y eliminación solo para las reseñas propias */}
-                {testimonial.usuario_id === user.usuario_id && (
+                {user && testimonial.usuario_id === user.usuario_id && (
                   <div className="flex justify-between items-center mt-4">
                     <button
                       onClick={() => handleEdit(testimonial)}
@@ -219,12 +264,12 @@ const ManageTestimonials = () => {
           >
             Anterior
           </button>
-          <span className="text-lg text-gray-700">Página {currentPage}</span>
+          <span className="text-lg text-gray-700">Página {currentPage} de {totalPages}</span>
           <button
             onClick={() => handlePageChange(currentPage + 1)}
-            disabled={testimonials.length <= testimonialsPerPage}
+            disabled={currentPage >= totalPages}
             className={`py-2 px-4 text-sm border-2 rounded-lg ${
-              testimonials.length <= testimonialsPerPage
+              currentPage >= totalPages
                 ? "bg-gray-200 text-gray-500 cursor-not-allowed"
                 : "bg-sgreen text-white border-green-500 hover:bg-green-600"
             }`}
