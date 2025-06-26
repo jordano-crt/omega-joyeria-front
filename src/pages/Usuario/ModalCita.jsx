@@ -2,7 +2,9 @@ import { useState, useEffect, useContext } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { AuthContext } from "../../services/authContext";
+import { getFechasOcupadas } from "../../services/citasService";
 import { toast } from "react-toastify";
+import { formatDateForBackend, createDateFromParts } from "../../utils/dateUtils";
 
 const ModalCita = ({ isOpen, onClose, citaData, onSave }) => {
   const [fecha, setFecha] = useState(null);
@@ -17,8 +19,9 @@ const ModalCita = ({ isOpen, onClose, citaData, onSave }) => {
 
   useEffect(() => {
     if (isOpen && citaData) {
-      setFecha(new Date(citaData.fecha_hora));
-      setHora(new Date(citaData.fecha_hora).getHours());
+      const citaDate = new Date(citaData.fecha_hora);
+      setFecha(citaDate);
+      setHora(citaDate.getHours());
       setServicioId(citaData.servicio_id);
       setNotas(citaData.notas || "");
       fetchServicios();
@@ -41,12 +44,7 @@ const ModalCita = ({ isOpen, onClose, citaData, onSave }) => {
 
   const fetchFechasOcupadas = async () => {
     try {
-      const response = await fetch("http://localhost:4000/citas/ocupadas", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!response.ok)
-        throw new Error("Error al obtener las fechas ocupadas.");
-      const data = await response.json();
+      const data = await getFechasOcupadas();
       setFechasOcupadas(data.map((item) => new Date(item.fecha_hora)));
     } catch (error) {
       console.error("Error en fetchFechasOcupadas:", error.message);
@@ -79,8 +77,7 @@ const ModalCita = ({ isOpen, onClose, citaData, onSave }) => {
       return;
     }
 
-    const fechaHoraSeleccionada = new Date(fecha);
-    fechaHoraSeleccionada.setHours(hora);
+    const fechaHoraSeleccionada = createDateFromParts(fecha, hora);
 
     const citaDuplicada = fechasOcupadas.some(
       (fechaOcupada) =>
@@ -95,7 +92,7 @@ const ModalCita = ({ isOpen, onClose, citaData, onSave }) => {
 
     try {
       const updatedCita = {
-        fecha_hora: fechaHoraSeleccionada.toISOString(),
+        fecha_hora: formatDateForBackend(fechaHoraSeleccionada),
         servicio_id: servicioId,
         notas,
       };
@@ -169,9 +166,9 @@ const ModalCita = ({ isOpen, onClose, citaData, onSave }) => {
               required
             >
               <option value="">Selecciona un servicio</option>
-              {servicios.map(({ servicio_id, nombre_servicio }) => (
+              {servicios.map(({ servicio_id, nombre_servicio, precio, descripcion }) => (
                 <option key={servicio_id} value={servicio_id}>
-                  {nombre_servicio}
+                  {nombre_servicio} - ${precio} - {descripcion}
                 </option>
               ))}
             </select>

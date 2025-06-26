@@ -10,8 +10,9 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     return <Navigate to="/login" replace />;
   }
 
-  if (allowedRoles && !allowedRoles.includes(user.rol_id)) {
+  if (allowedRoles && !allowedRoles.includes(Number(user.rol_id))) {
     // Redirigir al inicio si el rol no es permitido
+    // Convertir a número para asegurar comparación correcta
     return <Navigate to="/" replace />;
   }
 

@@ -5,7 +5,7 @@ import { register } from '../../services/authService';
 import { getCroppedImg } from '../../utils/cropImage';
 import { FaHome } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import logo from '../../assets/logo.svg';
+import logo from '../../assets/Logo.svg';
 import userImageDefault from '../../assets/userdefect.png';
 
 const Register = () => {

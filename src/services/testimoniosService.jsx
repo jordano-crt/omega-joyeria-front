@@ -10,15 +10,36 @@ const handleResponse = async (response) => {
 };
 
 // Obtener todas las reseñas aprobadas
-export const obtenerTestimonios = async () => {
+export const obtenerTestimonios = async (params = {}) => {
   try {
-    const response = await fetch(`${API_URL}`, {
-      method: 'GET',
+    // Construir URL con parámetros
+    const searchParams = new URLSearchParams();
+    Object.keys(params).forEach(key => {
+      if (params[key]) {
+        searchParams.append(key, params[key]);
+      }
     });
-    console.log("Respuesta del backend:", response); // Log para depurar
-    const data = await response.json();
-    console.log("Datos procesados:", data); // Log para verificar los datos procesados
-    return data;
+    
+    const url = `${API_URL}${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
+    
+    // Si tenemos un filtro por usuario específico, enviamos el token
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+    
+    if (params.usuario_id) {
+      const token = sessionStorage.getItem('token');
+      if (token) {
+        headers['x-auth-token'] = token;
+      }
+    }
+    
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: headers,
+    });
+    
+    return await handleResponse(response);
   } catch (error) {
     console.error('Error al obtener testimonios:', error);
     throw error;

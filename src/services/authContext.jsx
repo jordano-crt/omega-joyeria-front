@@ -3,19 +3,14 @@ import { createContext, useState, useEffect } from "react";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // Inicializa desde localStorage si existe, si no desde sessionStorage, si no null
-  const getInitialUser = () => {
-    const local = localStorage.getItem("user");
-    if (local) return JSON.parse(local);
-    const session = sessionStorage.getItem("user");
-    if (session) return JSON.parse(session);
-    return null;
-  };
-  const getInitialToken = () => {
-    return (
-      localStorage.getItem("token") || sessionStorage.getItem("token") || null
-    );
-  };
+
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // Añadir estado de carga
+
+  useEffect(() => {
+    const savedUser = sessionStorage.getItem("user");
+    const savedToken = sessionStorage.getItem("token");
 
   const [user, setUser] = useState(getInitialUser());
   const [token, setToken] = useState(getInitialToken());
@@ -26,8 +21,9 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("token", token);
     }
-  }, [user, token]);
 
+    setIsLoading(false); // Marcar como cargado
+  }, []);
   const loginUser = (userData, persist = true) => {
     const id = userData.usuario_id || userData.userId;
     if (!id) {
@@ -55,7 +51,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loginUser, logoutUser }}>
+    <AuthContext.Provider value={{ user, token, isLoading, loginUser, logoutUser }}>
       {children}
     </AuthContext.Provider>
   );

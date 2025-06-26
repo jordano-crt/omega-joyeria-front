@@ -1,14 +1,35 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../services/authContext';
+import { crearTestimonio } from '../../services/testimoniosService';
 
 const FormTestimonials = () => {
   const [contenido, setContenido] = useState('');
   const [estrellas, setEstrellas] = useState(5);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const { token } = useContext(AuthContext); // Obtenemos el token del contexto
+  const { token, user } = useContext(AuthContext); // Obtenemos el token y usuario del contexto
   const navigate = useNavigate();
+
+  // Verificar si el usuario es administrador
+  if (user?.rol_id === 2) {
+    return (
+      <section className="py-12 bg-white font-ibm">
+        <div className="container mx-auto px-6 md:px-12 lg:px-48">
+          <div className="text-center">
+            <h1 className="text-3xl font-semibold text-gray-800 mb-4">Acceso Restringido</h1>
+            <p className="text-red-500 mb-4">Los administradores no pueden crear reseñas.</p>
+            <button
+              onClick={() => navigate('/testimonials')}
+              className="bg-sgreen text-white py-2 px-4 rounded-lg"
+            >
+              Volver a Reseñas
+            </button>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,24 +37,10 @@ const FormTestimonials = () => {
     setSuccess(false);
 
     try {
-      // Realizamos la solicitud al backend para crear la reseña
-      const response = await fetch('http://localhost:4000/testimonios', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ contenido, estrellas }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Error al enviar la reseña.');
-      }
-
+      await crearTestimonio({ contenido, estrellas });
       // Mostrar mensaje de éxito y redirigir al listado
       setSuccess(true);
-      setTimeout(() => navigate('/testimonials/manage'), 2000);
+      setTimeout(() => navigate('/testimonials'), 2000);
     } catch (error) {
       setError(error.message);
     }
