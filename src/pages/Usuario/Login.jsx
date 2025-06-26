@@ -35,7 +35,7 @@ const Login = () => {
   
       // Asegúrate de pasar `usuario_id` junto con los otros datos al contexto
       loginUser({
-        usuario_id: response.usuario_id, // Incluye el usuario_id aquí
+        usuario_id: response.usuario_id || response.userId || response.id || response.nombre, // acepta cualquiera
         nombre: response.nombre,
         token: response.token,
         foto_perfil_url: response.foto_perfil_url,
