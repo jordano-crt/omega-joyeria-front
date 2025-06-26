@@ -27,7 +27,9 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const loginUser = (userData) => {
-    if (!userData.usuario_id) {
+    const id = userData.usuario_id || userData.userId;
+
+    if (!id) {
       console.error("El usuario_id no está presente en la respuesta.");
       return;
     }
