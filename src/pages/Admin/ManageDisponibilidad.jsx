@@ -81,7 +81,7 @@ const ManageDisponibilidad = () => {
       fecha: disponibilidad.fecha,
       horaInicio: disponibilidad.hora_inicio,
       horaFin: disponibilidad.hora_fin,
-      estado: disponibilidad.estado
+      estado: disponibilidad.estado // Mantener el estado actual sin permitir editarlo
     });
     setEditingDisponibilidad(disponibilidad);
     setShowForm(true);
@@ -199,21 +199,7 @@ const ManageDisponibilidad = () => {
                   />
                 </div>
 
-                {editingDisponibilidad && (
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Estado</label>
-                    <select
-                      value={formData.estado}
-                      onChange={(e) => setFormData({ ...formData, estado: e.target.value })}
-                      className="w-full py-2 px-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                    >
-                      <option value="disponible">Disponible</option>
-                      <option value="ocupada">Ocupada</option>
-                    </select>
-                  </div>
-                )}
-
-                <div className={`${editingDisponibilidad ? 'md:col-span-2 lg:col-span-4' : 'md:col-span-2 lg:col-span-3'} flex justify-end space-x-4`}>
+                <div className="md:col-span-2 lg:col-span-3 flex justify-end space-x-4">
                   <button
                     type="button"
                     onClick={resetForm}
