@@ -84,7 +84,6 @@ const AdminDashboard = () => {
           {/* Gestión de Servicios */}
           <Link
             to="/admin/servicios"
-
             className="col-span-2 row-span-1 rounded-xl bg-red-100 p-4 hover:shadow-md transition transform hover:-translate-y-1 flex flex-col justify-between"
           >
             <div className="flex items-center justify-center h-12 w-12 rounded-full bg-red-300 mb-3">
@@ -93,20 +92,6 @@ const AdminDashboard = () => {
             <div>
               <h3 className="text-lg font-semibold text-red-800 mb-1">Servicios</h3>
               <p className="text-xs text-red-600">Gestiona los servicios de joyería y relojería.</p>
-            </div>
-          </Link>
-
-          {/* Gestión de Productos */}
-          <Link
-            to="/admin/productos"
-            className="col-span-1 row-span-1 rounded-xl bg-pink-100 p-4 hover:shadow-md transition transform hover:-translate-y-1 flex flex-col justify-between"
-          >
-            <div className="flex items-center justify-center h-12 w-12 rounded-full bg-pink-300 mb-3">
-              <Briefcase className="text-pink-700 h-6 w-6" />
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-pink-800 mb-1">Productos</h3>
-              <p className="text-xs text-pink-600">Administra el stock y la información de productos.</p>
             </div>
           </Link>
         </div>

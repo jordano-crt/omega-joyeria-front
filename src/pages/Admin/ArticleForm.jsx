@@ -1,12 +1,10 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import SectionEditor from './SectionEditor';
-import { AuthContext } from '../../services/authContext';
 
 const ArticleForm = ({ onSubmit, initialData }) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { token } = useContext(AuthContext);
   const [title, setTitle] = useState(initialData?.titulo || '');
   const [introduction, setIntroduction] = useState(initialData?.contenido || '');
   const [sections, setSections] = useState(initialData?.secciones || []);
@@ -17,9 +15,7 @@ const ArticleForm = ({ onSubmit, initialData }) => {
     if (id && !initialData) {
       const fetchArticle = async () => {
         try {
-          const response = await fetch(`http://localhost:4000/blog/${id}`, {
-            headers: token ? { Authorization: `Bearer ${token}` } : {},
-          });
+          const response = await fetch(`http://localhost:4000/blog/${id}`);
           if (!response.ok) throw new Error('Error al cargar el artículo');
           const data = await response.json();
 
@@ -37,7 +33,7 @@ const ArticleForm = ({ onSubmit, initialData }) => {
       };
       fetchArticle();
     }
-  }, [id, initialData, token]);
+  }, [id, initialData]);
 
   const handleSectionChange = (index, updatedSection) => {
     setSections((prev) =>
@@ -50,7 +46,7 @@ const ArticleForm = ({ onSubmit, initialData }) => {
   };
 
   const handleTextareaResize = (e) => {
-    e.target.style.height = 'auto'; // restable la altura para calcular el nuevo scrollHeight
+    e.target.style.height = 'auto'; // Reset height to calculate the new height
     e.target.style.height = `${e.target.scrollHeight}px`;
   };
 
@@ -70,6 +66,7 @@ const ArticleForm = ({ onSubmit, initialData }) => {
         })),
     };
 
+    const token = sessionStorage.getItem('token');
     if (!token) {
       setMessage('Error: No se encontró un token. Por favor, inicia sesión.');
       setLoading(false);

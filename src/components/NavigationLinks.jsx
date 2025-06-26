@@ -32,11 +32,8 @@ const NavigationLinks = React.memo(() => {
       {/* Enlace Inicio dinámico */}
       <NavLink
         to={homeRoute}
-        className={({ isActive }) =>
-          `hover:text-sgreen transition duration-300${
-            isActive ? " font-bold text-sgreen" : ""
-          }`
-        }
+        className="hover:text-sgreen transition duration-300"
+        activeClassName="font-bold text-sgreen"
       >
         Inicio
       </NavLink>
@@ -44,23 +41,10 @@ const NavigationLinks = React.memo(() => {
       {/* Enlace Citas */}
       <NavLink
         to="/citas"
-        className={({ isActive }) =>
-          `hover:text-sgreen transition duration-300${
-            isActive ? " font-bold text-sgreen" : ""
-          }`
-        }
+        className="hover:text-sgreen transition duration-300"
+        activeClassName="font-bold text-sgreen"
       >
         Citas
-      </NavLink>
-
-      <NavLink
-        to="/catalogo"
-        className={({ isActive }) =>
-          `hover:text-sgreen transition duration-300${
-            isActive ? " font-bold text-sgreen" : ""
-        }`
-      }>
-        Catálogo
       </NavLink>
 
       {/* Menú desplegable Servicios */}
@@ -157,11 +141,8 @@ const NavigationLinks = React.memo(() => {
       {/* Enlace Quiénes Somos */}
       <NavLink
         to="/about"
-        className={({ isActive }) =>
-          `hover:text-sgreen transition duration-300 whitespace-nowrap${
-            isActive ? " font-bold text-sgreen" : ""
-          }`
-        }
+        className="hover:text-sgreen transition duration-300 whitespace-nowrap"
+        activeClassName="font-bold text-sgreen"
       >
         Quiénes Somos
       </NavLink>

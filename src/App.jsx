@@ -17,7 +17,6 @@ import About from "./pages/Comun/About";
 import FAQ from "./pages/Comun/Faq";
 import NotFoundPage from "./pages/Comun/404";
 import SolicitudPersonalizacion from "./pages/Usuario/SolicitudPersonalizacion";
-import Catalogo from "./pages/Comun/Catalogo";
 
 // Páginas de autenticación
 import Login from "./pages/Usuario/Login";
@@ -40,10 +39,8 @@ import ArticleForm from "./pages/Admin/ArticleForm";
 import ManageArticles from "./pages/Admin/ManageArticles";
 import ManageReseñas from "./pages/Admin/ManageReseñas";
 import ManageUsers from "./pages/Admin/ManageUsers";
-
 import ManageDisponibilidad from "./pages/Admin/ManageDisponibilidad";
 import ManageServicios from "./pages/Admin/ManageServicios";
-
 
 // Layout general
 function Layout({ children }) {
@@ -84,7 +81,6 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<Solicitud />} />
             <Route path="/reset-password" element={<Restablecer />} />
-            <Route path="/catalogo" element={<Catalogo />} />
 
             {/* Rutas protegidas para usuarios autenticados */}
             <Route
@@ -158,14 +154,6 @@ function App() {
               }
             />
             <Route
-              path="/admin/services"
-              element={
-                <ProtectedRoute allowedRoles={[2]}>
-                  <ManageServices />
-                </ProtectedRoute>
-              }
-            />
-            <Route
               path="/admin/blog"
               element={
                 <ProtectedRoute allowedRoles={[2]}>
@@ -182,30 +170,6 @@ function App() {
               }
             />
             <Route
-              path="/admin/events/new"
-              element={
-                <ProtectedRoute allowedRoles={[2]}>
-                  <EventForm />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/appointments"
-              element={
-                <ProtectedRoute allowedRoles={[2]}>
-                  <ManageCitasAdmin />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/events"
-              element={
-                <ProtectedRoute allowedRoles={[2]}>
-                  <ManageEventsAdmin />
-                </ProtectedRoute>
-              }
-            />
-            <Route
               path="/admin/blog/edit/:id"
               element={
                 <ProtectedRoute allowedRoles={[2]}>
@@ -218,7 +182,6 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={[2]}>
                   <ManageDisponibilidad />
-
                 </ProtectedRoute>
               }
             />
@@ -227,7 +190,6 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={[2]}>
                   <ManageServicios />
-
                 </ProtectedRoute>
               }
             />
