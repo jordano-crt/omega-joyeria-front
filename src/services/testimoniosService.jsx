@@ -12,6 +12,8 @@ const handleResponse = async (response) => {
 // Obtener todas las reseñas aprobadas
 export const obtenerTestimonios = async (params = {}) => {
   try {
+    const token = sessionStorage.getItem('token');
+    
     // Construir URL con parámetros
     const searchParams = new URLSearchParams();
     Object.keys(params).forEach(key => {
@@ -20,18 +22,19 @@ export const obtenerTestimonios = async (params = {}) => {
       }
     });
     
-    const url = `${API_URL}${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
-    
-    // Si tenemos un filtro por usuario específico, enviamos el token
-    const headers = {
+    // Si hay token y filtro por usuario, usar ruta autenticada; sino, usar ruta pública
+    let url;
+    let headers = {
       'Content-Type': 'application/json',
     };
     
-    if (params.usuario_id) {
-      const token = sessionStorage.getItem('token');
-      if (token) {
-        headers['x-auth-token'] = token;
-      }
+    if (token && params.usuario_id) {
+      // Ruta autenticada para testimonios específicos del usuario
+      url = `${API_URL}${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
+      headers['x-auth-token'] = token;
+    } else {
+      // Ruta pública para testimonios aprobados
+      url = `${API_URL}/publicos${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
     }
     
     const response = await fetch(url, {
