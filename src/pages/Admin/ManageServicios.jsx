@@ -22,7 +22,7 @@ const ManageServicios = () => {
 
   const { token, user } = useContext(AuthContext);
 
-  // Función para obtener solicitudes de servicios (citas)
+  // Función para obtener solicitudes de servicios (personalizaciones)
   const fetchServiceRequests = async () => {
     setLoadingRequests(true);
     try {
@@ -30,7 +30,7 @@ const ManageServicios = () => {
         throw new Error('No hay token de autenticación');
       }
 
-      const response = await fetch('http://localhost:4000/citas/admin/todas', {
+      const response = await fetch('http://localhost:4000/personalizacion', {
         headers: {
           'x-auth-token': token,
         },
@@ -43,8 +43,8 @@ const ManageServicios = () => {
 
       const data = await response.json();
       console.log('Solicitudes de servicios obtenidas:', data);
-      // El endpoint devuelve { success: true, data: [...] }
-      setServiceRequests(Array.isArray(data.data) ? data.data : []);
+      // El endpoint devuelve directamente el array de solicitudes
+      setServiceRequests(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error en fetchServiceRequests:', error);
       setError(error.message);
@@ -220,6 +220,36 @@ const ManageServicios = () => {
       } catch (error) {
         setError(error.message);
       }
+    }
+  };
+
+  // Función para actualizar el estado de una solicitud de personalización
+  const handleUpdateSolicitudStatus = async (solicitudId, nuevoEstado) => {
+    try {
+      if (!token) {
+        throw new Error('No hay token de autenticación');
+      }
+
+      const response = await fetch(`http://localhost:4000/personalizacion/${solicitudId}/${nuevoEstado}`, {
+        method: 'PUT',
+        headers: {
+          'x-auth-token': token,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `Error al ${nuevoEstado} la solicitud`);
+      }
+
+      // Actualizar la lista de solicitudes
+      await fetchServiceRequests();
+      
+      // Mostrar mensaje de éxito
+      alert(`Solicitud ${nuevoEstado === 'aceptar' ? 'aceptada' : 'rechazada'} exitosamente`);
+    } catch (error) {
+      console.error('Error al actualizar estado de solicitud:', error);
+      setError(error.message);
     }
   };
 
@@ -514,23 +544,26 @@ const ManageServicios = () => {
                             Servicio
                           </th>
                           <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Fecha/Hora
+                            Fecha Solicitud
                           </th>
                           <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Estado
                           </th>
                           <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Contacto
+                            Detalles
+                          </th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Acciones
                           </th>
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
                         {serviceRequests.map((request) => (
-                          <tr key={request.cita_id} className="hover:bg-gray-50">
+                          <tr key={request.solicitud_id} className="hover:bg-gray-50">
                             <td className="px-4 py-4 whitespace-nowrap">
                               <div className="flex flex-col">
                                 <div className="text-sm font-medium text-gray-900">
-                                  {request.usuario_nombre || 'N/A'} {request.usuario_apellido || ''}
+                                  {request.nombre || 'N/A'} {request.apellido_paterno || ''} {request.apellido_materno || ''}
                                 </div>
                                 <div className="text-sm text-gray-500">
                                   ID: {request.usuario_id}
@@ -540,53 +573,51 @@ const ManageServicios = () => {
                             <td className="px-4 py-4 whitespace-nowrap">
                               <div className="flex flex-col">
                                 <div className="text-sm font-medium text-gray-900">
-                                  {request.servicio_nombre || 'Servicio no especificado'}
-                                </div>
-                                <div className="text-sm text-gray-500">
-                                  ${request.servicio_precio || 'N/A'}
+                                  {request.nombre_servicio || 'Servicio no especificado'}
                                 </div>
                               </div>
                             </td>
                             <td className="px-4 py-4 whitespace-nowrap">
-                              <div className="flex flex-col">
-                                <div className="text-sm text-gray-900">
-                                  {request.fecha ? new Date(request.fecha).toLocaleDateString() : 'N/A'}
-                                </div>
-                                <div className="text-sm text-gray-500">
-                                  {request.hora_inicio ? `${request.hora_inicio} - ${request.hora_fin}` : 'N/A'}
-                                </div>
+                              <div className="text-sm text-gray-900">
+                                {request.fecha_solicitud ? new Date(request.fecha_solicitud).toLocaleDateString() : 'N/A'}
                               </div>
                             </td>
                             <td className="px-4 py-4 whitespace-nowrap">
                               <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                                request.estado_nombre === 'confirmada' ? 'bg-green-100 text-green-800' :
-                                request.estado_nombre === 'pendiente' ? 'bg-yellow-100 text-yellow-800' :
-                                request.estado_nombre === 'cancelada' ? 'bg-red-100 text-red-800' :
+                                request.nombre_estado === 'Confirmado' ? 'bg-green-100 text-green-800' :
+                                request.nombre_estado === 'Pendiente' ? 'bg-yellow-100 text-yellow-800' :
+                                request.nombre_estado === 'Cancelado' ? 'bg-red-100 text-red-800' :
                                 'bg-gray-100 text-gray-800'
                               }`}>
-                                {request.estado_nombre || 'pendiente'}
+                                {request.nombre_estado || 'Pendiente'}
                               </span>
                             </td>
-                            <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                              <div className="flex flex-col">
-                                {request.usuario_email && (
-                                  <div className="mb-1">
-                                    <a href={`mailto:${request.usuario_email}`} className="text-blue-600 hover:text-blue-800">
-                                      {request.usuario_email}
-                                    </a>
-                                  </div>
-                                )}
-                                {request.telefono && (
-                                  <div>
-                                    <a href={`tel:${request.telefono}`} className="text-blue-600 hover:text-blue-800">
-                                      {request.telefono}
-                                    </a>
-                                  </div>
-                                )}
-                                {!request.usuario_email && !request.telefono && (
-                                  <div className="text-gray-400">Sin contacto</div>
-                                )}
+                            <td className="px-4 py-4">
+                              <div className="text-sm text-gray-900 max-w-xs truncate">
+                                {request.detalles || 'Sin detalles'}
                               </div>
+                            </td>
+                            <td className="px-4 py-4 whitespace-nowrap">
+                              {request.nombre_estado === 'Pendiente' ? (
+                                <div className="flex space-x-2">
+                                  <button
+                                    onClick={() => handleUpdateSolicitudStatus(request.solicitud_id, 'aceptar')}
+                                    className="bg-green-500 text-white px-3 py-1 rounded text-xs hover:bg-green-600"
+                                  >
+                                    Aceptar
+                                  </button>
+                                  <button
+                                    onClick={() => handleUpdateSolicitudStatus(request.solicitud_id, 'rechazar')}
+                                    className="bg-red-500 text-white px-3 py-1 rounded text-xs hover:bg-red-600"
+                                  >
+                                    Rechazar
+                                  </button>
+                                </div>
+                              ) : (
+                                <span className="text-sm text-gray-500">
+                                  {request.nombre_estado}
+                                </span>
+                              )}
                             </td>
                           </tr>
                         ))}
