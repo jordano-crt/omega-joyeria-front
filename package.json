@@ -13,6 +13,7 @@
     "@fontsource/ibm-plex-mono": "^5.1.0",
     "@tailwindcss/line-clamp": "^0.4.4",
     "aos": "^2.3.4",
+    "axios": "^1.10.0",
     "browser-image-compression": "^2.0.2",
     "feather-icons": "^4.29.2",
     "framer-motion": "^11.11.10",
