@@ -10,15 +10,39 @@ const handleResponse = async (response) => {
 };
 
 // Obtener todas las reseñas aprobadas
-export const obtenerTestimonios = async () => {
+export const obtenerTestimonios = async (params = {}) => {
   try {
-    const response = await fetch(`${API_URL}`, {
-      method: 'GET',
+    const token = sessionStorage.getItem('token');
+    
+    // Construir URL con parámetros
+    const searchParams = new URLSearchParams();
+    Object.keys(params).forEach(key => {
+      if (params[key]) {
+        searchParams.append(key, params[key]);
+      }
     });
-    console.log("Respuesta del backend:", response); // Log para depurar
-    const data = await response.json();
-    console.log("Datos procesados:", data); // Log para verificar los datos procesados
-    return data;
+    
+    // Si hay token y filtro por usuario, usar ruta autenticada; sino, usar ruta pública
+    let url;
+    let headers = {
+      'Content-Type': 'application/json',
+    };
+    
+    if (token && params.usuario_id) {
+      // Ruta autenticada para testimonios específicos del usuario
+      url = `${API_URL}${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
+      headers['x-auth-token'] = token;
+    } else {
+      // Ruta pública para testimonios aprobados
+      url = `${API_URL}/publicos${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
+    }
+    
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: headers,
+    });
+    
+    return await handleResponse(response);
   } catch (error) {
     console.error('Error al obtener testimonios:', error);
     throw error;

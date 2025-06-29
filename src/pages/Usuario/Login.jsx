@@ -4,7 +4,7 @@ import { login } from '../../services/authService';
 import { AuthContext } from '../../services/authContext';
 import { motion } from 'framer-motion';
 import { AiOutlineLoading, AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
-import logo from '../../assets/logo.svg';
+import logo from '../../assets/Logo.svg';
 import googleLogo from '../../assets/google.png';
 
 const Login = () => {
@@ -35,7 +35,7 @@ const Login = () => {
   
       // Asegúrate de pasar `usuario_id` junto con los otros datos al contexto
       loginUser({
-        usuario_id: response.usuario_id || response.userId || response.id || response.nombre, // acepta cualquiera
+        usuario_id: response.usuario_id, // Incluye el usuario_id aquí
         nombre: response.nombre,
         token: response.token,
         foto_perfil_url: response.foto_perfil_url,

@@ -2,6 +2,8 @@ import { useState, useEffect, useContext } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { AuthContext } from "../../services/authContext";
+import { getFechasOcupadas, createCita } from "../../services/citasService";
+import { formatDateForBackend, createDateFromParts } from "../../utils/dateUtils";
 
 const FormCita = ({ isOpen, onClose, onSave }) => {
   const [fecha, setFecha] = useState(null); // Solo fecha sin hora
@@ -35,17 +37,7 @@ const FormCita = ({ isOpen, onClose, onSave }) => {
 
   const fetchFechasOcupadas = async () => {
     try {
-      const response = await fetch("http://localhost:4000/citas/ocupadas", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Error al obtener las fechas ocupadas.");
-      }
-
-      const data = await response.json();
+      const data = await getFechasOcupadas();
       setFechasOcupadas(data.map((item) => new Date(item.fecha_hora)));
     } catch (error) {
       console.error("Error en fetchFechasOcupadas:", error.message);
@@ -90,29 +82,15 @@ const FormCita = ({ isOpen, onClose, onSave }) => {
       return;
     }
 
-    const fechaHoraSeleccionada = new Date(fecha);
-    fechaHoraSeleccionada.setHours(hora);
+    const fechaHoraSeleccionada = createDateFromParts(fecha, hora);
 
     try {
-      const response = await fetch("http://localhost:4000/citas", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          fecha_hora: fechaHoraSeleccionada.toISOString(),
-          servicio_id: servicioId,
-          notas,
-        }),
+      await createCita({
+        fecha_hora: formatDateForBackend(fechaHoraSeleccionada),
+        servicio_id: servicioId,
+        notas,
       });
 
-      if (!response.ok) {
-        const errorData = await response.json(); // Leer el mensaje del backend
-        throw new Error(errorData.message || "Error al crear la cita.");
-      }
-
-      await response.json();
       onSave(); // Actualizar citas en el frontend
       onClose(); // Cerrar el modal
     } catch (error) {

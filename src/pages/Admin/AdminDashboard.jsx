@@ -39,17 +39,17 @@ const AdminDashboard = () => {
             </div>
           </Link>
 
-          {/* Gestión de Citas */}
+          {/* Gestión de Disponibilidades */}
           <Link
-            to="/admin/appointments"
+            to="/admin/disponibilidad"
             className="col-span-2 row-span-1 rounded-xl bg-green-100 p-4 hover:shadow-md transition transform hover:-translate-y-1 flex flex-col justify-between"
           >
             <div className="flex items-center justify-center h-12 w-12 rounded-full bg-green-300 mb-3">
               <Calendar className="text-green-700 h-6 w-6" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-green-800 mb-1">Citas</h3>
-              <p className="text-xs text-green-600">Organiza y administra las citas de los usuarios.</p>
+              <h3 className="text-lg font-semibold text-green-800 mb-1">Disponibilidades</h3>
+              <p className="text-xs text-green-600">Gestiona los horarios disponibles para citas.</p>
             </div>
           </Link>
 
@@ -81,9 +81,9 @@ const AdminDashboard = () => {
             </div>
           </Link>
 
-          {/* Servicios Personalizados */}
+          {/* Gestión de Servicios */}
           <Link
-            to="/admin/custom-services"
+            to="/admin/servicios"
             className="col-span-2 row-span-1 rounded-xl bg-red-100 p-4 hover:shadow-md transition transform hover:-translate-y-1 flex flex-col justify-between"
           >
             <div className="flex items-center justify-center h-12 w-12 rounded-full bg-red-300 mb-3">
@@ -91,7 +91,7 @@ const AdminDashboard = () => {
             </div>
             <div>
               <h3 className="text-lg font-semibold text-red-800 mb-1">Servicios</h3>
-              <p className="text-xs text-red-600">Gestiona los servicios personalizados ofrecidos.</p>
+              <p className="text-xs text-red-600">Gestiona los servicios de joyería y relojería.</p>
             </div>
           </Link>
         </div>

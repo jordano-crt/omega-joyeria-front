@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 import { motion } from 'framer-motion';
 import { AiOutlineLoading } from 'react-icons/ai';
-import logo from '../../assets/logo.svg';
+import logo from '../../assets/Logo.svg';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
