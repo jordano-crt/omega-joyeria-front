@@ -32,7 +32,9 @@ const Login = () => {
     try {
       const response = await login(formData); // Llama al servicio de login
       console.log("Datos recibidos desde el backend:", response); // Log para depurar
-  
+      sessionStorage.removeItem('token');
+      localStorage.removeItem('token');
+      sessionStorage.setItem('token', response.token);
       // Asegúrate de pasar `usuario_id` junto con los otros datos al contexto
       loginUser({
         usuario_id: response.usuario_id, // Incluye el usuario_id aquí
@@ -42,6 +44,9 @@ const Login = () => {
         rol_id: response.rol_id, // Incluye el rol_id
       });
   
+      
+
+
       // Redirigir según el rol del usuario
       if (response.rol_id === 2) {
         navigate('/admin'); // Redirige al panel de administración

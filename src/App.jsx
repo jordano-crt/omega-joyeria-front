@@ -17,6 +17,7 @@ import About from "./pages/Comun/About";
 import FAQ from "./pages/Comun/Faq";
 import NotFoundPage from "./pages/Comun/404";
 import SolicitudPersonalizacion from "./pages/Usuario/SolicitudPersonalizacion";
+import Catalogo from "./pages/Comun/Catalogo";
 
 // Páginas de autenticación
 import Login from "./pages/Usuario/Login";
@@ -41,6 +42,10 @@ import ManageReseñas from "./pages/Admin/ManageReseñas";
 import ManageUsers from "./pages/Admin/ManageUsers";
 import ManageDisponibilidad from "./pages/Admin/ManageDisponibilidad";
 import ManageServicios from "./pages/Admin/ManageServicios";
+import ProductosAdmin from './pages/admin/ProductosAdmin';
+import KpiPanel from './pages/Admin/kpiPanel'; // asegúrate de la ruta correcta
+
+
 
 // Layout general
 function Layout({ children }) {
@@ -81,7 +86,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<Solicitud />} />
             <Route path="/reset-password" element={<Restablecer />} />
-
+            <Route path="/catalogo" element={<Catalogo />} />
             {/* Rutas protegidas para usuarios autenticados */}
             <Route
               path="/profile"
@@ -193,6 +198,24 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+            path="/admin/productos"
+            element={
+              <ProtectedRoute allowedRoles={[2]}>
+                <ProductosAdmin />
+              </ProtectedRoute>
+              }
+            />
+
+            <Route
+            path="/admin/kpi"
+            element={
+              <ProtectedRoute allowedRoles={[2]}>
+                <KpiPanel />
+              </ProtectedRoute>
+            }
+            />
+
 
             {/* Ruta 404 */}
             <Route path="*" element={<NotFoundPage />} />
