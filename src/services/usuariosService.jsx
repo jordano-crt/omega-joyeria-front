@@ -10,29 +10,6 @@ const handleResponse = async (response) => {
   return data;
 };
 
-
-// Eliminar cuenta propia
-export const eliminarCuentaPropia = async () => {
-  const token = sessionStorage.getItem('token');
-  if (!token) throw new Error('Token no encontrado');
-
-  try {
-    const response = await fetch('http://localhost:4000/usuarios/perfil', {
-      method: 'DELETE',
-      headers: {
-        'x-auth-token': token,
-      },
-    });
-    return await handleResponse(response);
-  } catch (error) {
-    console.error('Error al eliminar la cuenta:', error);
-    throw error;
-  }
-};
-
-
-
-
 // Actualizar usuario completo (solo admin)
 export const actualizarUsuarioAdmin = async (userId, userData) => {
   const token = sessionStorage.getItem('token');

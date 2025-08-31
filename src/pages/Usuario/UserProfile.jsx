@@ -363,8 +363,8 @@ const UserProfile = () => {
       <Modal
         showModal={showModal}
         toggleModal={toggleModal}
-        onConfirm={handleDeleteAccount}
-        loading={loadingDelete}
+        handleDeleteAccount={handleDeleteAccount}
+        loadingDelete={loadingDelete}
       />
 
       {/* Modal de Cropper */}

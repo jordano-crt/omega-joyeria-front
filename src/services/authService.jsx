@@ -94,7 +94,7 @@ export const deleteAccount = async () => {
   }
 
   try {
-    const response = await fetch(`${API_URL}/usuarios/perfil`, {
+    const response = await fetch(`${API_URL}/usuarios/eliminar`, {
       method: 'DELETE',
       headers: {
         'x-auth-token': token, // Asegúrate de enviar el token de autenticación

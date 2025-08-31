@@ -119,7 +119,9 @@ const ModalCita = ({ isOpen, onClose, citaData, onSave }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
-        
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+          Editar Cita
+        </h2>
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
