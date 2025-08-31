@@ -19,6 +19,7 @@ const ManageEventsAdmin = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await response.json();
+        console.log('Eventos obtenidos en React:', data);
         setEvents(data || []);
       } catch (err) {
         setError('Error al cargar eventos');

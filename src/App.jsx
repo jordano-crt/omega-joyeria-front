@@ -44,6 +44,8 @@ import ManageDisponibilidad from "./pages/Admin/ManageDisponibilidad";
 import ManageServicios from "./pages/Admin/ManageServicios";
 import ProductosAdmin from './pages/admin/ProductosAdmin';
 import KpiPanel from './pages/Admin/kpiPanel'; // asegúrate de la ruta correcta
+import ManageEventsAdmin from './pages/Admin/ManageEventsAdmin';
+import EventForm from './pages/Admin/EventsForm'; // ajusta la ruta si es diferente
 
 
 
@@ -215,6 +217,34 @@ function App() {
               </ProtectedRoute>
             }
             />
+
+            <Route
+              path="/admin/events"
+              element={
+                <ProtectedRoute allowedRoles={[2]}>
+                  <ManageEventsAdmin />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/admin/events/edit/:id"
+              element={
+                <ProtectedRoute allowedRoles={[2]}>
+                  <EventForm />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/admin/events/new"
+              element={
+                <ProtectedRoute allowedRoles={[2]}>
+                  <EventForm />
+                </ProtectedRoute>
+              }
+            />
+
 
 
             {/* Ruta 404 */}

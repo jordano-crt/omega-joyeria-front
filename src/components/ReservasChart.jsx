@@ -51,12 +51,16 @@ const ReservasChart = () => {
   if (!chartData) return <p className="p-4">Cargando gráfico...</p>;
 
   return (
-    <div className="bg-white p-4 rounded shadow">
+    <div
+      className="bg-white p-4 rounded shadow"
+      style={{ maxWidth: '600px', height: '350px', margin: '0 auto' }}
+    >
       <h2 className="text-xl font-semibold mb-4">Reservas Mensuales</h2>
       <Bar
         data={chartData}
         options={{
           responsive: true,
+          maintainAspectRatio: false,
           plugins: {
             legend: { position: 'top' },
             title: { display: true, text: 'Reservas Confirmadas (últimos 12 meses)' },
@@ -64,6 +68,7 @@ const ReservasChart = () => {
         }}
       />
     </div>
+
   );
 };
 
