@@ -5,6 +5,8 @@ import {
   useLocation,
 } from "react-router-dom";
 import { AuthProvider } from "./services/authContext";
+import { Bounce, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Componentes comunes
 import Header from "./components/Header";
@@ -42,7 +44,7 @@ import ManageReseñas from "./pages/Admin/ManageReseñas";
 import ManageUsers from "./pages/Admin/ManageUsers";
 import ManageDisponibilidad from "./pages/Admin/ManageDisponibilidad";
 import ManageServicios from "./pages/Admin/ManageServicios";
-import ProductosAdmin from './pages/admin/ProductosAdmin';
+import ProductosAdmin from './pages/Admin/ProductosAdmin';
 import KpiPanel from './pages/Admin/kpiPanel'; // asegúrate de la ruta correcta
 
 
@@ -75,6 +77,20 @@ function App() {
     <AuthProvider>
       <Router>
         <Layout>
+          <ToastContainer
+            position="top-right"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss={false}
+            draggable={false}
+            pauseOnHover
+            theme="ligth"
+            transition={Bounce}
+            style={{ top: '80px', right: '20px' }} 
+            />
           <Routes>
             {/* Rutas públicas */}
             <Route path="/" element={<Home />} />

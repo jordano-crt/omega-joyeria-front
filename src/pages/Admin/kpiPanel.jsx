@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import ReservasChart from '../../components/ReservasChart';
+import ReservasEstadosChart from '../../components/ReservasEstadosChart';
+import { Bounce, toast } from 'react-toastify';
 
 const KpiPanel = () => {
   const [kpis, setKpis] = useState(null);
   const [reservasMensuales, setReservasMensuales] = useState(null);
+  const [reservasEstados, setReservasEstados ] = useState(null);
+
   const token = sessionStorage.getItem('token');
 
   useEffect(() => {
+    let isCancelled = false; // Flag para cancelar si el componente se desmonta
+
     // Fetch KPIs generales
     const fetchKpis = async () => {
       try {
@@ -15,9 +21,22 @@ const KpiPanel = () => {
         });
         if (!res.ok) throw new Error('Error al obtener los KPIs');
         const data = await res.json();
-        setKpis(data);
+        
+        if (!isCancelled) { // Solo ejecutar si no se canceló
+          setKpis(data);
+          toast.success("KPIs cargados correctamente", {
+            position: "top-right",
+            theme: "colored"
+          });
+        }
       } catch (error) {
-        console.error('Error al cargar KPIs:', error);
+        if (!isCancelled) {
+          console.error('Error al cargar KPIs:', error);
+          toast.error("Error al cargar KPIs", {
+            position: "top-right",
+            theme: "colored"
+          });
+        }
       }
     };
 
@@ -29,17 +48,48 @@ const KpiPanel = () => {
         });
         if (!res.ok) throw new Error('Error al obtener datos del gráfico');
         const data = await res.json();
-        setReservasMensuales(data);
+        
+        if (!isCancelled) {
+          setReservasMensuales(data);
+        }
       } catch (error) {
-        console.error('Error al cargar gráfico:', error);
+        if (!isCancelled) {
+          console.error('Error al cargar gráfico:', error);
+        }
+      }
+    };
+    
+    const fetchReservasEstados = async () => {
+      try {
+        const res = await fetch('http://localhost:4000/admin/kpi/reservas-estados', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) throw new Error('Error al obtener datos del gráfico');
+        const data = await res.json();
+
+        // console.log("🔍 Datos de estados de reservas:", data);
+        
+        if (!isCancelled) {
+          setReservasEstados(data);
+        }
+      } catch (error) {
+        if (!isCancelled) {
+          console.error('Error al cargar gráfico:', error);
+        }
       }
     };
 
     fetchKpis();
     fetchReservasMensuales();
+    fetchReservasEstados();
+
+    // Cleanup function
+    return () => {
+      isCancelled = true;
+    };
   }, [token]);
 
-  if (!kpis || !reservasMensuales) {
+  if (!kpis || !reservasMensuales || !reservasEstados) {
     return <p className="p-4">Cargando KPIs...</p>;
   }
 
@@ -63,10 +113,22 @@ const KpiPanel = () => {
         </div>
       </div>
 
-      {/* Gráfico de reservas con datos */}
-      <ReservasChart meses={reservasMensuales.meses} valores={reservasMensuales.valores} />
+      {/* Gráficos */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Gráfico de reservas mensuales */}
+        <div>
+          <ReservasChart meses={reservasMensuales.meses} valores={reservasMensuales.valores} />
+        </div>
+        
+        {/* Gráfico de estados de reservas */}
+        <div>
+          <ReservasEstadosChart chartData={reservasEstados} />
+        </div>
+      </div>
     </div>
   );
+
+
 };
 
 export default KpiPanel;
