@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../services/authContext';
+import DatePicker, { registerLocale } from 'react-datepicker';
+import es from 'date-fns/locale/es';
+import "react-datepicker/dist/react-datepicker.css";
+
+// Registrar localización en español
+registerLocale('es', es);
 
 const EventForm = () => {
   const { token } = useContext(AuthContext);
@@ -36,6 +42,10 @@ const EventForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
+  };
+
+  const handleDateChange = (date, fieldName) => {
+    setForm({ ...form, [fieldName]: date ? date.toISOString() : '' });
   };
 
   const handleSubmit = async (e) => {
@@ -88,33 +98,40 @@ const EventForm = () => {
 
       {/* Fecha de inicio */}
       <div>
-        <label htmlFor="fecha_inicio" className="block font-medium mb-1 text-gray-700">
+        <label className="block font-medium mb-1 text-gray-700">
           Fecha y hora de inicio
         </label>
-        <input
-          type="datetime-local"
-          id="fecha_inicio"
-          name="fecha_inicio"
-          value={form.fecha_inicio?.slice(0, 16) || ''}
-          onChange={handleChange}
-          required
+        <DatePicker
+          selected={form.fecha_inicio ? new Date(form.fecha_inicio) : null}
+          onChange={(date) => handleDateChange(date, 'fecha_inicio')}
+          showTimeSelect
+          timeFormat="HH:mm"
+          timeIntervals={15}
+          dateFormat="dd/MM/yyyy HH:mm"
+          locale="es"
+          placeholderText="Selecciona fecha y hora"
           className="w-full border p-2 rounded"
+          required
         />
       </div>
 
       {/* Fecha de fin */}
       <div>
-        <label htmlFor="fecha_fin" className="block font-medium mb-1 text-gray-700">
+        <label className="block font-medium mb-1 text-gray-700">
           Fecha y hora de finalización
         </label>
-        <input
-          type="datetime-local"
-          id="fecha_fin"
-          name="fecha_fin"
-          value={form.fecha_fin?.slice(0, 16) || ''}
-          onChange={handleChange}
-          required
+        <DatePicker
+          selected={form.fecha_fin ? new Date(form.fecha_fin) : null}
+          onChange={(date) => handleDateChange(date, 'fecha_fin')}
+          showTimeSelect
+          timeFormat="HH:mm"
+          timeIntervals={15}
+          dateFormat="dd/MM/yyyy HH:mm"
+          locale="es"
+          placeholderText="Selecciona fecha y hora"
           className="w-full border p-2 rounded"
+          required
+          minDate={form.fecha_inicio ? new Date(form.fecha_inicio) : new Date()}
         />
       </div>
 
