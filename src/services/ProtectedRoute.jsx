@@ -3,7 +3,10 @@ import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../services/authContext';
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
-  const { user } = useContext(AuthContext);
+  const { user, isLoading } = useContext(AuthContext);
+
+  // Mientras se recupera la sesión desde storage, no redirigir.
+  if (isLoading) return null;
 
   if (!user) {
     // Redirigir al login si el usuario no está autenticado
