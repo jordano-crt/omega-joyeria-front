@@ -110,7 +110,7 @@ export const confirmarReserva = async (reservaId) => {
   try {
     console.log(`Confirmando reserva en: ${API_URL}/reservas/confirmar/${reservaId}`);
 
-    const response = await fetch(`${API_URL}/reserva/confirmar/${reservaId}`, {
+    const response = await fetch(`${API_URL}/reservas/confirmar/${reservaId}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,

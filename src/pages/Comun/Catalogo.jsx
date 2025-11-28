@@ -50,8 +50,8 @@ const Catalogo = () => {
       filtroStock === 'todos'
         ? true
         : filtroStock === 'stock'
-        ? p.stock > 0
-        : p.stock === 0
+        ? Number(p.stock) > 0
+        : Number(p.stock) === 0
     )
     .sort((a, b) => {
       if (orden === 'precio-asc') return a.precio_producto - b.precio_producto;
