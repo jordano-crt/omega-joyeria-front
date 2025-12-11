@@ -17,7 +17,7 @@ const Catalogo = () => {
 
   const cargarProductos = async () => {
     try {
-      const response = await fetch('http://localhost:4000/productos/catalogo');
+      const response = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:4000') + '/productos/catalogo');
       const data = await response.json();
       setProductos(Array.isArray(data) ? data : []);
     } catch (error) {

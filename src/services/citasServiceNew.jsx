@@ -1,4 +1,5 @@
-const API_URL = 'http://localhost:4000/citas';
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+const API_URL = `${BASE_URL}/citas`;
 
 const handleResponse = async (response) => {
   const data = await response.json();
@@ -217,7 +218,7 @@ export const obtenerServicios = async () => {
   if (!token) throw new Error('Token no encontrado');
 
   try {
-    const response = await fetch('http://localhost:4000/servicios', {
+    const response = await fetch(`${BASE_URL}/servicios`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

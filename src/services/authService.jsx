@@ -1,4 +1,6 @@
-const API_URL = 'http://localhost:4000'; // Cambiar a HTTPS en producción 
+// Usar la variable de entorno VITE_API_URL definida en la raíz (.env)
+// Vite expone variables que empiezan por VITE_ a `import.meta.env`
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'; // Cambiar a HTTPS en producción
 
 const handleResponse = async (response) => {
   const data = await response.json();

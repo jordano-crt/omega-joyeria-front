@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:4000/disponibilidad';
+const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:4000') + '/disponibilidad';
 
 const handleResponse = async (response) => {
   const data = await response.json();

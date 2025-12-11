@@ -1,5 +1,5 @@
 // Servicio para gestión de usuarios por administradores
-const API_URL = 'http://localhost:4000/usuarios';
+const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:4000') + '/usuarios';
 
 const handleResponse = async (response) => {
   const data = await response.json();
