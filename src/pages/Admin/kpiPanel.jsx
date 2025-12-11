@@ -16,7 +16,7 @@ const KpiPanel = () => {
     // Fetch KPIs generales
     const fetchKpis = async () => {
       try {
-        const res = await fetch('http://localhost:4000/admin/kpi', {
+        const res = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:4000') + '/admin/kpi', {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error('Error al obtener los KPIs');
@@ -43,7 +43,7 @@ const KpiPanel = () => {
     // Fetch datos para gráfico reservas mensuales
     const fetchReservasMensuales = async () => {
       try {
-        const res = await fetch('http://localhost:4000/admin/kpi/reservas-mensuales', {
+        const res = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:4000') + '/admin/kpi/reservas-mensuales', {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error('Error al obtener datos del gráfico');
@@ -61,7 +61,7 @@ const KpiPanel = () => {
     
     const fetchReservasEstados = async () => {
       try {
-        const res = await fetch('http://localhost:4000/admin/kpi/reservas-estados', {
+        const res = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:4000') + '/admin/kpi/reservas-estados', {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error('Error al obtener datos del gráfico');

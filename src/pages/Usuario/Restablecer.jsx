@@ -30,7 +30,7 @@ const ResetPassword = () => {
     setSuccessMessage('');
 
     try {
-      const response = await fetch('http://localhost:4000/usuarios/restablecer', {
+      const response = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:4000') + '/usuarios/restablecer', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

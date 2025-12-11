@@ -19,7 +19,7 @@ const ManageArticles = () => {
           throw new Error('Usuario no autenticado. Inicia sesión nuevamente.');
         }
 
-        const response = await fetch('http://localhost:4000/blog', {
+        const response = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:4000') + '/blog', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -50,7 +50,7 @@ const ManageArticles = () => {
 
   const confirmDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/blog/${articleToDelete}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:4000'}/blog/${articleToDelete}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,

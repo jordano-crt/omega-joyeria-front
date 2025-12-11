@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 import { useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -16,9 +17,7 @@ const Blog = () => {
   const fetchArticles = async (page) => {
     setError("");
     try {
-      const response = await fetch(
-        `http://localhost:4000/blog?limit=${articlesPerPage}&page=${page}`
-      );
+      const response = await fetch(`${BASE_URL}/blog?limit=${articlesPerPage}&page=${page}`);
       if (!response.ok) {
         throw new Error("Error al cargar los artículos");
       }
@@ -35,7 +34,7 @@ const Blog = () => {
   const fetchArticle = async (id) => {
     setError("");
     try {
-      const response = await fetch(`http://localhost:4000/blog/${id}`);
+      const response = await fetch(`${BASE_URL}/blog/${id}`);
       if (!response.ok) {
         throw new Error("Error al cargar el artículo");
       }

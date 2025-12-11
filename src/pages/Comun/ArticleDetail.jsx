@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 import { motion } from 'framer-motion';
 
 const ArticleDetail = () => {
@@ -12,7 +13,7 @@ const ArticleDetail = () => {
   useEffect(() => {
     const fetchArticle = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/blog/${id}`);
+        const response = await fetch(`${BASE_URL}/blog/${id}`);
         if (!response.ok) {
           throw new Error('Error al cargar el artículo');
         }

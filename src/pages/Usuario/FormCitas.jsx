@@ -18,7 +18,7 @@ const FormCita = ({ isOpen, onClose, onSave }) => {
 
   const fetchServicios = async () => {
     try {
-      const response = await fetch("http://localhost:4000/servicios", {
+      const response = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:4000') + '/servicios', {
         headers: {
           Authorization: `Bearer ${token}`,
         },

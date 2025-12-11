@@ -30,7 +30,7 @@ const EventForm = () => {
   useEffect(() => {
     // Si no hay datos en el state y es edición, cargar desde la API
     if (isEditing && !location.state?.evento) {
-      fetch(`http://localhost:4000/eventos/${id}`, {
+      fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:4000'}/eventos/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then(res => res.json())
@@ -51,7 +51,7 @@ const EventForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const method = isEditing ? 'PUT' : 'POST';
-    const url = isEditing ? `http://localhost:4000/eventos/${id}` : 'http://localhost:4000/eventos';
+    const url = isEditing ? `${import.meta.env.VITE_API_URL || 'http://localhost:4000'}/eventos/${id}` : (import.meta.env.VITE_API_URL || 'http://localhost:4000') + '/eventos';
 
     try {
       await fetch(url, {

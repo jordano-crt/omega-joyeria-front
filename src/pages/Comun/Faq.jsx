@@ -12,7 +12,7 @@ const FAQSection = () => {
     const fetchFAQData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch("http://localhost:4000/faq/");
+        const response = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:4000') + '/faq/');
         if (!response.ok)
           throw new Error("Error al obtener las preguntas frecuentes");
         const data = await response.json();

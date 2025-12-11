@@ -13,7 +13,7 @@ const ManageEvents = () => {
   // Obtener todos los eventos
   const fetchEvents = async () => {
     try {
-      const response = await fetch("http://localhost:4000/eventos", {
+      const response = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:4000') + '/eventos', {
         headers: {
           Authorization: `Bearer ${token}`,
         },

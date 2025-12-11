@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 import SectionEditor from './SectionEditor';
 
 const ArticleForm = ({ onSubmit, initialData }) => {
@@ -15,7 +16,7 @@ const ArticleForm = ({ onSubmit, initialData }) => {
     if (id && !initialData) {
       const fetchArticle = async () => {
         try {
-          const response = await fetch(`http://localhost:4000/blog/${id}`);
+          const response = await fetch(`${BASE_URL}/blog/${id}`);
           if (!response.ok) throw new Error('Error al cargar el artículo');
           const data = await response.json();
 
@@ -75,9 +76,7 @@ const ArticleForm = ({ onSubmit, initialData }) => {
 
     try {
       const method = id ? 'PUT' : 'POST';
-      const endpoint = id
-        ? `http://localhost:4000/blog/${id}`
-        : `http://localhost:4000/blog`;
+      const endpoint = id ? `${BASE_URL}/blog/${id}` : `${BASE_URL}/blog`;
 
       const response = await fetch(endpoint, {
         method,

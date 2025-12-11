@@ -140,7 +140,7 @@ const UserProfile = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:4000/usuarios/perfil', {
+      const response = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:4000') + '/usuarios/perfil', {
         method: 'PUT',
         headers: {
           'x-auth-token': sessionStorage.getItem('token'),

@@ -44,7 +44,7 @@ import ManageReseñas from "./pages/Admin/ManageReseñas";
 import ManageUsers from "./pages/Admin/ManageUsers";
 import ManageDisponibilidad from "./pages/Admin/ManageDisponibilidad";
 import ManageServicios from "./pages/Admin/ManageServicios";
-import ProductosAdmin from './pages/Admin/ProductosAdmin';
+import ProductosAdmin from './pages/Admin/productosAdmin';
 import KpiPanel from './pages/Admin/kpiPanel'; // asegúrate de la ruta correcta
 import ManageEventsAdmin from './pages/Admin/ManageEventsAdmin';
 import EventsForm from './pages/Admin/EventsForm';

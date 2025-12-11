@@ -21,7 +21,7 @@ const SolicitudPersonalizacion = () => {
     const fetchServicios = async () => {
       try {
         if (!token) return;
-        const response = await fetch("http://localhost:4000/servicios", {
+        const response = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:4000') + '/servicios', {
           headers: {
             "x-auth-token": token,
           },
@@ -87,7 +87,7 @@ const SolicitudPersonalizacion = () => {
     try {
       setLoading(true);
 
-      const response = await fetch("http://localhost:4000/personalizacion", {
+      const response = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:4000') + '/personalizacion', {
         method: "POST",
         headers: {
           "x-auth-token": token,

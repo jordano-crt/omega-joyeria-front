@@ -11,9 +11,7 @@ const EventDetails = ({ isOpen, onClose, eventData, token, onInscripcion }) => {
   useEffect(() => {
     const checkInscripcion = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:4000/eventos/${eventData.evento_id}/inscripcion`,
-          {
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:4000'}/eventos/${eventData.evento_id}/inscripcion`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -35,9 +33,7 @@ const EventDetails = ({ isOpen, onClose, eventData, token, onInscripcion }) => {
   // Manejar inscripción
   const handleInscription = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:4000/eventos/inscripcion",
-        {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:4000'}/eventos/inscripcion`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -62,9 +58,7 @@ const EventDetails = ({ isOpen, onClose, eventData, token, onInscripcion }) => {
   // Manejar cancelación de inscripción
   const handleCancelInscription = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:4000/eventos/inscripcion/${eventData.evento_id}`,
-        {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:4000'}/eventos/inscripcion/${eventData.evento_id}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,
