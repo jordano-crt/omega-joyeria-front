@@ -5,6 +5,7 @@ import { AuthContext } from "../../services/authContext";
 import { getFechasOcupadas } from "../../services/citasService";
 import { toast } from "react-toastify";
 import { formatDateForBackend, createDateFromParts } from "../../utils/dateUtils";
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
 const ModalCita = ({ isOpen, onClose, citaData, onSave }) => {
   const [fecha, setFecha] = useState(null);
@@ -31,7 +32,7 @@ const ModalCita = ({ isOpen, onClose, citaData, onSave }) => {
 
   const fetchServicios = async () => {
     try {
-      const response = await fetch("http://localhost:4000/servicios", {
+      const response = await fetch(`${BASE_URL}/servicios`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error("Error al obtener los servicios.");

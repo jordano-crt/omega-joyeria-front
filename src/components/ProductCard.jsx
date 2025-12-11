@@ -127,7 +127,7 @@ const ProductCard = ({ producto, onNotification, onStockUpdate }) => {
         <div className="w-full h-48 bg-gray-200 rounded-2xl mb-4 overflow-hidden">
           {producto.imagen_producto ? (
             <img
-              src={`http://localhost:4000/${producto.imagen_producto}`}
+              src={`${import.meta.env.VITE_API_URL || 'http://localhost:4000'}/${producto.imagen_producto}`}
               alt={producto.nombre_producto}
               className="w-full h-full object-cover"
             />

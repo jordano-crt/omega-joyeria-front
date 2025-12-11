@@ -20,7 +20,7 @@ const ReservasChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('http://localhost:4000/admin/kpi/reservas-mensuales', {
+        const res = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:4000') + '/admin/kpi/reservas-mensuales', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
