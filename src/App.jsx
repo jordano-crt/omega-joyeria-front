@@ -16,7 +16,7 @@ import ProtectedRoute from "./services/ProtectedRoute";
 // Páginas principales
 import Home from "./pages/Comun/Home.jsx";
 import About from "./pages/Comun/About.jsx";
-import FAQ from "./pages/Comun/Faq.jsx";
+import Faq from "./pages/Comun/Faq.jsx";
 import NotFoundPage from "./pages/Comun/404.jsx";
 import SolicitudPersonalizacion from "./pages/Usuario/SolicitudPersonalizacion.jsx";
 import Catalogo from "./pages/Comun/Catalogo.jsx";
@@ -45,7 +45,7 @@ import ManageUsers from "./pages/Admin/ManageUsers.jsx";
 import ManageDisponibilidad from "./pages/Admin/ManageDisponibilidad.jsx";
 import ManageServicios from "./pages/Admin/ManageServicios.jsx";
 import ProductosAdmin from './pages/Admin/ProductosAdmin.jsx';
-import KpiPanel from './pages/Admin/kpiPanel.jsx';
+import kpiPanel from './pages/Admin/kpiPanel.jsx';
 import ManageEventsAdmin from './pages/Admin/ManageEventsAdmin.jsx';
 import EventsForm from './pages/Admin/EventsForm.jsx';
 
@@ -97,7 +97,7 @@ function App() {
             {/* Rutas públicas */}
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
-            <Route path="/faq" element={<FAQ />} />
+            <Route path="/faq" element={<Faq />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:id" element={<ArticleDetail />} />
             <Route path="/login" element={<Login />} />
@@ -229,7 +229,7 @@ function App() {
             path="/admin/kpi"
             element={
               <ProtectedRoute allowedRoles={[2]}>
-                <KpiPanel />
+                <kpiPanel />
               </ProtectedRoute>
             }
             />
