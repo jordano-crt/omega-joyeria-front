@@ -2,6 +2,8 @@ import { useState, useEffect, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AuthContext } from "../../services/authContext";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+
 const ManageServicios = () => {
   const [servicios, setServicios] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,7 +32,7 @@ const ManageServicios = () => {
         throw new Error('No hay token de autenticación');
       }
 
-      const response = await fetch('http://localhost:4000/personalizacion', {
+      const response = await fetch(`${API_URL}/personalizacion`, {
         headers: {
           'x-auth-token': token,
         },
@@ -63,7 +65,7 @@ const ManageServicios = () => {
         throw new Error('No hay token de autenticación');
       }
 
-      const response = await fetch('http://localhost:4000/servicios', {
+      const response = await fetch(`${API_URL}/servicios`, {
         headers: {
           'x-auth-token': token,
         },
@@ -150,8 +152,8 @@ const ManageServicios = () => {
       }
 
       const url = editingServicio 
-        ? `http://localhost:4000/servicios/${editingServicio.servicio_id}`
-        : 'http://localhost:4000/servicios';
+        ? `${API_URL}/servicios/${editingServicio.servicio_id}`
+        : `${API_URL}/servicios`;
         
       const method = editingServicio ? 'PUT' : 'POST';
       
@@ -204,7 +206,7 @@ const ManageServicios = () => {
   const handleDelete = async (servicioId) => {
     if (window.confirm('¿Estás seguro de que deseas eliminar este servicio?')) {
       try {
-        const response = await fetch(`http://localhost:4000/servicios/${servicioId}`, {
+        const response = await fetch(`${API_URL}/servicios/${servicioId}`, {
           method: 'DELETE',
           headers: {
             'x-auth-token': token,
@@ -230,7 +232,7 @@ const ManageServicios = () => {
         throw new Error('No hay token de autenticación');
       }
 
-      const response = await fetch(`http://localhost:4000/personalizacion/${solicitudId}/${nuevoEstado}`, {
+      const response = await fetch(`${API_URL}/personalizacion/${solicitudId}/${nuevoEstado}`, {
         method: 'PUT',
         headers: {
           'x-auth-token': token,

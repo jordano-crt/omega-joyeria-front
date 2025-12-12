@@ -4,6 +4,8 @@ import { AuthContext } from '../../services/authContext';
 import Modal from '../../components/Modal';
 import { FiEdit2, FiTrash2 } from 'react-icons/fi';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+
 const ManageEventsAdmin = () => {
   const { token } = useContext(AuthContext);
   const [events, setEvents] = useState([]);
@@ -16,7 +18,7 @@ const ManageEventsAdmin = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch('http://localhost:4000/eventos', {
+        const response = await fetch(`${API_URL}/eventos`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await response.json();
@@ -34,7 +36,7 @@ const ManageEventsAdmin = () => {
 
   const confirmDelete = async () => {
     try {
-      await fetch(`http://localhost:4000/eventos/${eventToDelete}`, {
+      await fetch(`${API_URL}/eventos/${eventToDelete}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });

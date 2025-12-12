@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../services/authContext';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+
 const initialForm = {
   nombre_producto: '',
   descripcion_producto: '',
@@ -26,7 +28,7 @@ const ProductosAdmin = () => {
   const fetchProductos = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:4000/productos/catalogo', {
+      const res = await fetch(`${API_URL}/productos/catalogo`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -75,8 +77,8 @@ const ProductosAdmin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const url = isEditing
-      ? `http://localhost:4000/productos/${editId}`
-      : 'http://localhost:4000/productos';
+      ? `${API_URL}/productos/${editId}`
+      : `${API_URL}/productos`;
     const method = isEditing ? 'PUT' : 'POST';
 
     const formData = new FormData();
@@ -141,7 +143,7 @@ const ProductosAdmin = () => {
                         {(() => { console.log('imagen_producto:', producto.imagen_producto); return null; })()}
                         {producto.imagen_producto ? (
                           <img
-                            src={`http://localhost:4000/${producto.imagen_producto.replace(/\\/g, '/')}`}
+                            src={`${API_URL}/${producto.imagen_producto.replace(/\\/g, '/')}`}
                             alt={producto.nombre_producto}
                             className="h-16 w-16 object-cover rounded"
                           />
