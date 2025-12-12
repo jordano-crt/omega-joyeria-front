@@ -23,7 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 
-
+.env
 diagrag.mdj
 diagrama_de_clase.mdj
 diagrama_De_uso.mdj
