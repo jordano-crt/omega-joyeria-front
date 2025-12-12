@@ -14,40 +14,40 @@ import Footer from "./components/Footer";
 import ProtectedRoute from "./services/ProtectedRoute";
 
 // Páginas principales
-import Home from "./pages/Comun/Home";
-import About from "./pages/Comun/About";
-import FAQ from "./pages/Comun/Faq";
-import NotFoundPage from "./pages/Comun/404";
-import SolicitudPersonalizacion from "./pages/Usuario/SolicitudPersonalizacion";
-import Catalogo from "./pages/Comun/Catalogo";
+import Home from "./pages/Comun/Home.jsx";
+import About from "./pages/Comun/About.jsx";
+import FAQ from "./pages/Comun/Faq.jsx";
+import NotFoundPage from "./pages/Comun/404.jsx";
+import SolicitudPersonalizacion from "./pages/Usuario/SolicitudPersonalizacion.jsx";
+import Catalogo from "./pages/Comun/Catalogo.jsx";
 
 // Páginas de autenticación
-import Login from "./pages/Usuario/Login";
-import Register from "./pages/Usuario/Register";
-import Solicitud from "./pages/Usuario/Solicitud";
-import Restablecer from "./pages/Usuario/Restablecer";
-import Profile from "./pages/Usuario/UserProfile";
-import ManageTestimonials from "./pages/Usuario/ManageTestimonials";
-import FormTestimonials from "./pages/Usuario/FormTestimonials";
-import ManageEvents from "./pages/Usuario/ManageEvents";
-import ManageCitasNew from "./pages/Usuario/ManageCitasNew";
+import Login from "./pages/Usuario/Login.jsx";
+import Register from "./pages/Usuario/Register.jsx";
+import Solicitud from "./pages/Usuario/Solicitud.jsx";
+import Restablecer from "./pages/Usuario/Restablecer.jsx";
+import Profile from "./pages/Usuario/UserProfile.jsx";
+import ManageTestimonials from "./pages/Usuario/ManageTestimonials.jsx";
+import FormTestimonials from "./pages/Usuario/FormTestimonials.jsx";
+import ManageEvents from "./pages/Usuario/ManageEvents.jsx";
+import ManageCitasNew from "./pages/Usuario/ManageCitasNew.jsx";
 
 // Páginas del blog
-import Blog from "./pages/Comun/Blog";
-import ArticleDetail from "./pages/Comun/ArticleDetail";
+import Blog from "./pages/Comun/Blog.jsx";
+import ArticleDetail from "./pages/Comun/ArticleDetail.jsx";
 
 // Administración
-import AdminDashboard from "./pages/Admin/AdminDashboard";
-import ArticleForm from "./pages/Admin/ArticleForm";
-import ManageArticles from "./pages/Admin/ManageArticles";
-import ManageReseñas from "./pages/Admin/ManageReseñas";
-import ManageUsers from "./pages/Admin/ManageUsers";
-import ManageDisponibilidad from "./pages/Admin/ManageDisponibilidad";
-import ManageServicios from "./pages/Admin/ManageServicios";
+import AdminDashboard from "./pages/Admin/AdminDashboard.jsx";
+import ArticleForm from "./pages/Admin/ArticleForm.jsx";
+import ManageArticles from "./pages/Admin/ManageArticles.jsx";
+import ManageReseñas from "./pages/Admin/ManageReseñas.jsx";
+import ManageUsers from "./pages/Admin/ManageUsers.jsx";
+import ManageDisponibilidad from "./pages/Admin/ManageDisponibilidad.jsx";
+import ManageServicios from "./pages/Admin/ManageServicios.jsx";
 import ProductosAdmin from './pages/Admin/ProductosAdmin.jsx';
-import KpiPanel from './pages/Admin/kpiPanel'; // asegúrate de la ruta correcta
-import ManageEventsAdmin from './pages/Admin/ManageEventsAdmin';
-import EventsForm from './pages/Admin/EventsForm';
+import KpiPanel from './pages/Admin/kpiPanel.jsx';
+import ManageEventsAdmin from './pages/Admin/ManageEventsAdmin.jsx';
+import EventsForm from './pages/Admin/EventsForm.jsx';
 
 
 
