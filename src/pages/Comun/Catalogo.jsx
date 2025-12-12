@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import ProductCard from '../../components/ProductCard';
 import Notification from '../../components/Notification';
-import { useNotification } from '../../hooks/useNotification';
+import { useNotification } from '../../Hooks/useNotification';
 
 const Catalogo = () => {
   const [productos, setProductos] = useState([]);
